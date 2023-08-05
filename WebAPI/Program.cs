@@ -2,10 +2,14 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using Business.Mapping;
+using Core.Utilities.Security.Encryption;
+using Core.Utilities.Security.Jwt;
 using DataAccess.Context;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Reflection;
-using WebAPI.Middlewares;
 using WebAPI.Modules.Autofac;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,19 +23,68 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddAutoMapper(typeof(MapProfile));
 
-
 // DB connection
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
+    var connectionString = builder.Configuration.GetConnectionString("TaskApp");
 
-    //options.UseSqlServer(builder.Configuration.GetConnectionString("TaskApp"));
-    options.UseSqlServer(builder.Configuration.GetConnectionString("TaskApp"), o =>
+    if (!string.IsNullOrEmpty(connectionString))
     {
-        //repository layer in ismini reflection ile aldýk ileride deðiþtirme olasýlýðý düþünülerek.
-        o.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name);
-    });
+        options.UseSqlServer(connectionString, o =>
+        {
+            //repository layer in ismini reflection ile alýndý ileride deðiþtirme olasýlýðý düþünülerek.
+            o.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name);
+        });
+    }
+    else
+    {
+        options.UseInMemoryDatabase("taskDb");
+    }
 
 });
+
+var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidIssuer = tokenOptions.Issuer,
+        ValidAudience = tokenOptions.Audience,
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecretKey)
+    };
+});
+
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Oðuzhan Cihan Task", Version = "v1" });
+    // JWT Kimlik Doðrulamayý Swagger için yapýlandýrma
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                },
+                new string[] {}
+            }
+        });
+});
+
 
 //Autofac plugin
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
@@ -49,7 +102,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCustomException();
+//app.UseCustomException();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

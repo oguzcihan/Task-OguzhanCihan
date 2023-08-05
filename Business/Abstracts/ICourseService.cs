@@ -2,6 +2,9 @@
 
 namespace Business.Abstracts
 {
+    /// <summary>
+    /// Course CRUD operasyonlarını içerir.
+    /// </summary>
     public interface ICourseService
     {
         Task<CourseDto> GetByIdAsync(int id);

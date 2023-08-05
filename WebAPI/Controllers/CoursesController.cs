@@ -1,10 +1,13 @@
 ﻿using Business.Abstracts;
 using Core.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace WebAPI.Controllers
 {
+    [Authorize(Roles = "Admin,Standart")]
     public class CoursesController : BaseController
     {
         private readonly ICourseService _courseService;

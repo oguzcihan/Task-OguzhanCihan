@@ -5,7 +5,6 @@ using Core.Dtos;
 using Core.Entities;
 using Core.UnitOfWork;
 using DataAccess.Abstracts;
-using DataAccess.Concretes;
 using Microsoft.EntityFrameworkCore;
 
 namespace Business.Concretes
@@ -23,7 +22,11 @@ namespace Business.Concretes
         }
 
 
-
+        /// <summary>
+        /// Department kaydetme işlemini yapar.
+        /// </summary>
+        /// <param name="departmentDto"></param>
+        /// <returns>DepartmentDto.</returns>
         public async Task<DepartmentDto> AddAsync(DepartmentDto departmentDto)
         {
             var department = _mapper.Map<Department>(departmentDto);
@@ -33,6 +36,10 @@ namespace Business.Concretes
             return departmentDto;
         }
 
+        /// <summary>
+        /// Tüm Departments listesini bulur.
+        /// </summary>
+        /// <returns>DepartmentDto.</returns>
         public async Task<IEnumerable<DepartmentDto>> GetAllAsync()
         {
             var department = await _departmentRepository.GetAll().ToListAsync();
@@ -42,6 +49,11 @@ namespace Business.Concretes
             return departmentDto;
         }
 
+        /// <summary>
+        /// ID ye göre Department verisini getirme işlemini yapar.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>DepartmentDto.</returns>
         public async Task<DepartmentDto> GetByIdAsync(int id)
         {
             var department = await _departmentRepository.GetByIdAsync(id);
@@ -50,6 +62,12 @@ namespace Business.Concretes
             return departmentDto;
         }
 
+        /// <summary>
+        /// ID si verilen Department ı silme işlemini yapar.
+        /// </summary>
+        /// <param name="depId"></param>
+        /// <returns></returns>
+        /// <exception cref="NotFoundException"></exception>
         public async Task RemoveAsync(int depId)
         {
             var department = await _departmentRepository.GetByIdAsync(depId);
@@ -62,6 +80,13 @@ namespace Business.Concretes
             await _unitOfWork.CommitAsync();
         }
 
+        /// <summary>
+        /// Department güncelleme işlemini yapar.
+        /// </summary>
+        /// <param name="depId"></param>
+        /// <param name="departmentDto"></param>
+        /// <returns>DepartmentDto</returns>
+        /// <exception cref="NotFoundException"></exception>
         public async Task<DepartmentDto> UpdateAsync(int depId, DepartmentDto departmentDto)
         {
             var department = await _departmentRepository.GetByIdAsync(depId);

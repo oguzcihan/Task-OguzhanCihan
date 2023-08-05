@@ -30,6 +30,12 @@ namespace Business.Concretes
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// ID si verilen Student verisini getirir.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>StudentDto</returns>
+        /// <exception cref="NotFoundException"></exception>
         public async Task<StudentDto> GetByIdAsync(int id)
         {
             var student = await _studentRepository.GetByIdAsync(id);
@@ -50,7 +56,13 @@ namespace Business.Concretes
             return studentDto;
         }
 
-
+        /// <summary>
+        /// Student ekleme işlemi yapar.
+        /// </summary>
+        /// <param name="courseId"></param>
+        /// <param name="studentDto"></param>
+        /// <returns>StudentDto</returns>
+        /// <exception cref="NotFoundException"></exception>
         public async Task<StudentDto> AddAsync(int courseId, StudentDto studentDto)
         {
             var course = await _courseRepository.GetByIdAsync(courseId);
@@ -74,7 +86,14 @@ namespace Business.Concretes
             return studentDto;
         }
 
-
+        /// <summary>
+        /// Student güncelleme işlemini yapar.
+        /// </summary>
+        /// <param name="courseId"></param>
+        /// <param name="studentId"></param>
+        /// <param name="studentDto"></param>
+        /// <returns>StudentDto</returns>
+        /// <exception cref="NotFoundException"></exception>
         public async Task<StudentDto> UpdateAsync(int courseId, int studentId, StudentDto studentDto)
         {
             var student = await _studentRepository.GetByIdAsync(studentId);
@@ -97,7 +116,12 @@ namespace Business.Concretes
             return studentDto;
         }
 
-
+        /// <summary>
+        /// ID si verilen ilgili Student ı siler.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <exception cref="NotFoundException"></exception>
         public async Task RemoveAsync(int id)
         {
             var student = await _studentRepository.GetByIdAsync(id);

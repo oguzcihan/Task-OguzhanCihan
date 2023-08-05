@@ -1,10 +1,11 @@
 ﻿using Business.Abstracts;
 using Core.Dtos;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
+    //[Authorize(Roles = "Admin,Standart")]
     public class DepartmentsController : BaseController
     {
         private readonly IDepartmentService _departmentService;

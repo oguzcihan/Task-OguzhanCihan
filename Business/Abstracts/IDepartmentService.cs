@@ -2,6 +2,9 @@
 
 namespace Business.Abstracts
 {
+    /// <summary>
+    /// Department CRUD operasyonlarını içerir
+    /// </summary>
     public interface IDepartmentService
     {
         Task<DepartmentDto> GetByIdAsync(int id);
