@@ -1,14 +1,11 @@
 ﻿using System.Linq.Expressions;
-using Core.Dtos;
-using Core.Entities;
 
 namespace Core.DataAccess.Abstracts;
 
-public interface IAsyncRepository<T> : IQuery<T> where T : AbsBaseEntity
+public interface IAsyncRepository<TEntity> : IQuery<TEntity> where TEntity : class
 {
-    Task<T> GetAsync(Expression<Func<T, bool>> predicate);
-    Task<T> AddAsync(T entity);
-    Task<T> UpdateAsync(T entity);
-    Task<T> DeleteAsync(T entity);
-    Task<bool> AnyAsync(Expression<Func<T, bool>> expression);
+    Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate);
+    Task<TEntity> AddAsync(TEntity entity);
+    Task<TEntity> UpdateAsync(TEntity entity);
+    Task<TEntity> DeleteAsync(TEntity entity);
 }

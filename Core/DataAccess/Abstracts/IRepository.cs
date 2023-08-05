@@ -1,15 +1,13 @@
 ﻿using System.Linq.Expressions;
-using Core.Entities;
 
-namespace Core.DataAccess.Abstracts;
-
-public interface IRepository<T> : IQuery<T> where T : AbsBaseEntity
+namespace Core.DataAccess.Abstracts
 {
-    T Get(Expression<Func<T, bool>> predicate);
-    IList<T> GetList(Expression<Func<T, bool>> filter = null);
-    
-    T Add(T entity);
-    T Update(T entity);
-    T Delete(T entity);
-
+    public interface IRepository<TEntity> : IQuery<TEntity> where TEntity : class
+    {
+        TEntity Get(Expression<Func<TEntity, bool>> predicate);
+        IList<TEntity> GetList(Expression<Func<TEntity, bool>> filter = null);
+        TEntity Add(TEntity entity);
+        TEntity Update(TEntity entity);
+        TEntity Delete(TEntity entity);
+    }
 }

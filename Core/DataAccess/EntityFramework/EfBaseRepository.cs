@@ -8,54 +8,84 @@ public class EfBaseRepository<TEntity, TContext> : IBaseRepository<TEntity>
     where TEntity : class
     where TContext : DbContext
 {
-    protected TContext _context { get; }
-    private readonly DbSet<TEntity> _dbSet;
+    protected TContext Context { get; }
+    //private readonly DbSet<TEntity> _dbSet;
 
     public EfBaseRepository(TContext context)
     {
-        _context = context;
-        _dbSet = _context.Set<TEntity>();
+        Context = context;
     }
 
-    public async Task<TEntity> GetByIdAsync(int id)
+    public IQueryable<TEntity> Query()
     {
-        return await _dbSet.FindAsync(id);
+        return Context.Set<TEntity>();
+    }
+
+    public async Task<TEntity> GetAsync(Expression<Func<TEntity, bool>> predicate)
+    {
+        return await Context.Set<TEntity>().FirstOrDefaultAsync(predicate);
+    }
+
+    public async Task<TEntity> AddAsync(TEntity entity)
+    {
+        Context.Entry(entity).State = EntityState.Added;
+        await Context.SaveChangesAsync();
+        return entity;
+    }
+
+    public async Task<TEntity> UpdateAsync(TEntity entity)
+    {
+        Context.Entry(entity).State = EntityState.Modified;
+        await Context.SaveChangesAsync();
+        return entity;
+    }
+
+    public async Task<TEntity> DeleteAsync(TEntity entity)
+    {
+        Context.Entry(entity).State = EntityState.Deleted;
+        await Context.SaveChangesAsync();
+        return entity;
+    }
+
+    public TEntity Get(Expression<Func<TEntity, bool>> predicate)
+    {
+        return Context.Set<TEntity>().FirstOrDefault(predicate);
+    }
+
+    public IList<TEntity> GetList(Expression<Func<TEntity, bool>> filter = null)
+    {
+        return filter == null ? Context.Set<TEntity>().ToList() : Context.Set<TEntity>().Where(filter).ToList();
+    }
+
+    public TEntity Add(TEntity entity)
+    {
+        Context.Entry(entity).State = EntityState.Added;
+        Context.SaveChanges();
+        return entity;
+    }
+
+    public TEntity Update(TEntity entity)
+    {
+        Context.Entry(entity).State = EntityState.Modified;
+        Context.SaveChanges();
+        return entity;
+    }
+
+    public TEntity Delete(TEntity entity)
+    {
+        Context.Entry(entity).State = EntityState.Deleted;
+        Context.SaveChanges();
+        return entity;
     }
 
     public IQueryable<TEntity> GetAll()
     {
         //asnotracking memory e verileri almaz daha verimli çalışır
-        return _dbSet.AsNoTracking().AsQueryable();
+        return Context.Set<TEntity>().AsNoTracking().AsQueryable();
     }
 
-    public IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression)
+    public async Task<TEntity> GetByIdAsync(int id)
     {
-        return _dbSet.Where(expression);
-    }
-
-    public async Task AddAsync(TEntity entity)
-    {
-        await _dbSet.AddAsync(entity);
-    }
-
-    public async Task AddRangeAsync(IEnumerable<TEntity> entities)
-    {
-        await _dbSet.AddRangeAsync(entities);
-    }
-
-    public void Update(TEntity entity)
-    {
-        _dbSet.Update(entity);
-    }
-
-    public void Remove(TEntity entity)
-    {
-        //bu aşamada entity state ini delete yapar gidip db den silmez
-        _dbSet.Remove(entity);
-    }
-
-    public void RemoveRange(IEnumerable<TEntity> entities)
-    {
-        _dbSet.RemoveRange(entities);
+        return await Context.Set<TEntity>().FindAsync(id);
     }
 }

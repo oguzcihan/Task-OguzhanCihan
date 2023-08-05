@@ -1,10 +1,12 @@
 ﻿using Business.Abstracts;
 using Core.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace WebAPI.Controllers
 {
-
+    [Authorize(Roles = "Admin")]
     public class StudentsController : BaseController
     {
         private readonly IStudentService _studentService;

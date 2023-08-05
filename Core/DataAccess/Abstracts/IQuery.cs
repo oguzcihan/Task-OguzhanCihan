@@ -1,6 +1,6 @@
 ﻿namespace Core.DataAccess.Abstracts;
 
-public interface IQuery<T>
+public interface IQuery<TEntity>
 {
-    IQueryable<T> Query();
+    IQueryable<TEntity> Query();
 }

@@ -3,7 +3,6 @@ using Business.Abstracts;
 using Business.Exceptions;
 using Core.Dtos;
 using Core.Entities;
-using Core.UnitOfWork;
 using DataAccess.Abstracts;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,27 +11,32 @@ namespace Business.Concretes
     public class CourseManager : ICourseService
     {
         private readonly ICourseRepository _courseRepository;
-        private readonly IUnitOfWork _unitOfWork;
-
         private readonly IMapper _mapper;
 
 
-        public CourseManager(ICourseRepository courseRepository, IUnitOfWork unitOfWork, IMapper mappper)
+        public CourseManager(ICourseRepository courseRepository, IMapper mappper)
         {
-            _unitOfWork = unitOfWork;
             _mapper = mappper;
             _courseRepository = courseRepository;
         }
 
+        /// <summary>
+        /// Course kaydetme işlemini yapar.
+        /// </summary>
+        /// <param name="courseDto"></param>
+        /// <returns>CourseDto</returns>
         public async Task<CourseDto> AddAsync(CourseDto courseDto)
         {
             var course = _mapper.Map<Course>(courseDto);
             await _courseRepository.AddAsync(course);
-            await _unitOfWork.CommitAsync();
 
             return courseDto;
         }
 
+        /// <summary>
+        /// Tüm kursları listeler.
+        /// </summary>
+        /// <returns>CourseDto</returns>
         public async Task<IEnumerable<CourseDto>> GetAllAsync()
         {
             var courses = await _courseRepository.GetAll().ToListAsync();
@@ -42,6 +46,11 @@ namespace Business.Concretes
             return coursesDto;
         }
 
+        /// <summary>
+        /// Id si verilen Course u listeler.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>CourseDto</returns>
         public async Task<CourseDto> GetByIdAsync(int id)
         {
             var course = await _courseRepository.GetByIdAsync(id);
@@ -50,6 +59,12 @@ namespace Business.Concretes
             return courseDto;
         }
 
+        /// <summary>
+        /// ID si verilen Course u siler.
+        /// </summary>
+        /// <param name="courseId"></param>
+        /// <returns></returns>
+        /// <exception cref="NotFoundException"></exception>
         public async Task RemoveAsync(int courseId)
         {
             var course = await _courseRepository.GetByIdAsync(courseId);
@@ -57,12 +72,17 @@ namespace Business.Concretes
             {
                 throw new NotFoundException($"{typeof(Course).Name}({courseId}) not found");
             }
-            _courseRepository.Remove(course);
-
-            await _unitOfWork.CommitAsync();
+            await _courseRepository.DeleteAsync(course);
 
         }
 
+        /// <summary>
+        /// Id ile bulunan ilgili Course u güncelleme işlemini yapar.
+        /// </summary>
+        /// <param name="courseId"></param>
+        /// <param name="courseDto"></param>
+        /// <returns>CourseDto</returns>
+        /// <exception cref="NotFoundException"></exception>
         public async Task<CourseDto> UpdateAsync(int courseId, CourseDto courseDto)
         {
             var course = await _courseRepository.GetByIdAsync(courseId);
@@ -74,8 +94,6 @@ namespace Business.Concretes
             var courseMapping = _mapper.Map(courseDto, course);
 
             _courseRepository.Update(courseMapping);
-
-            await _unitOfWork.CommitAsync(); //kayıt
 
             return courseDto;
         }

@@ -1,10 +1,9 @@
 ﻿using Autofac;
 using Business.Abstracts;
 using Business.Concretes;
-using Core.UnitOfWork;
+using Core.Utilities.Security.Jwt;
 using DataAccess.Abstracts;
 using DataAccess.Concretes;
-using DataAccess.UnitOfWork;
 using Module = Autofac.Module;
 
 namespace WebAPI.Modules.Autofac
@@ -14,21 +13,23 @@ namespace WebAPI.Modules.Autofac
         protected override void Load(ContainerBuilder builder)
         {
 
-            builder.RegisterGeneric(typeof(BaseService<>)).As(typeof(IBaseService<>)).InstancePerLifetimeScope();
-            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();  //IUnitofWork ü gördüğünde UnitOfWork ü nesne örneği al
-
-
-            //Book
-            builder.RegisterType<StudentManager>().As<IStudentService>();
-            builder.RegisterType<CourseManager>().As<ICourseService>();
-            builder.RegisterType<DepartmentManager>().As<IDepartmentService>();
+            //Manager
+            builder.RegisterType<StudentManager>().As<IStudentService>().InstancePerLifetimeScope();
+            builder.RegisterType<CourseManager>().As<ICourseService>().InstancePerLifetimeScope();
+            builder.RegisterType<DepartmentManager>().As<IDepartmentService>().InstancePerLifetimeScope();
+            builder.RegisterType<UserManager>().As<IUserService>().InstancePerLifetimeScope();
 
             //Repo
             builder.RegisterType<StudentRepository>().As<IStudentRepository>();
             builder.RegisterType<CourseRepository>().As<ICourseRepository>();
             builder.RegisterType<StudentCourseRepository>().As<IStudentCourseRepository>();
+            builder.RegisterType<UserRepository>().As<IUserRepository>();
+            builder.RegisterType<DepartmentRepository>().As<IDepartmentRepository>();
 
 
+            //Authentication
+            builder.RegisterType<AuthManager>().As<IAuthService>().InstancePerLifetimeScope();
+            builder.RegisterType<JwtHelper>().As<ITokenHelper>().InstancePerLifetimeScope();
         }
     }
 }

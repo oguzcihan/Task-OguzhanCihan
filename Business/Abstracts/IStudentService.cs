@@ -4,6 +4,9 @@ using System.Linq.Expressions;
 
 namespace Business.Abstracts
 {
+    /// <summary>
+    /// Student CRUD operasyonlarını içerir.
+    /// </summary>
     public interface IStudentService
     {
 
