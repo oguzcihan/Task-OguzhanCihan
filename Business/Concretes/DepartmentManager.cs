@@ -3,7 +3,6 @@ using Business.Abstracts;
 using Business.Exceptions;
 using Core.Dtos;
 using Core.Entities;
-using Core.UnitOfWork;
 using DataAccess.Abstracts;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,12 +11,10 @@ namespace Business.Concretes
     public class DepartmentManager : IDepartmentService
     {
         private readonly IDepartmentRepository _departmentRepository;
-        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public DepartmentManager(IDepartmentRepository departmentRepository, IUnitOfWork unitOfWork, IMapper mapper)
+        public DepartmentManager(IDepartmentRepository departmentRepository, IMapper mapper)
         {
             _departmentRepository = departmentRepository;
-            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -30,8 +27,12 @@ namespace Business.Concretes
         public async Task<DepartmentDto> AddAsync(DepartmentDto departmentDto)
         {
             var department = _mapper.Map<Department>(departmentDto);
-            await _departmentRepository.AddAsync(department);
-            await _unitOfWork.CommitAsync();
+            var result = await _departmentRepository.AddAsync(department);
+            if (result == null)
+            {
+                throw new Exception("AddAsync()");
+            }
+
 
             return departmentDto;
         }
@@ -75,9 +76,8 @@ namespace Business.Concretes
             {
                 throw new NotFoundException($"{typeof(Department).Name}({depId}) not found");
             }
-            _departmentRepository.Remove(department);
+            await _departmentRepository.DeleteAsync(department);
 
-            await _unitOfWork.CommitAsync();
         }
 
         /// <summary>
@@ -98,8 +98,6 @@ namespace Business.Concretes
             var departmentMapping = _mapper.Map(departmentDto, department);
 
             _departmentRepository.Update(departmentMapping);
-
-            await _unitOfWork.CommitAsync(); //kayıt
 
             return departmentDto;
         }

@@ -15,12 +15,13 @@ namespace Business.Concretes
 
         public List<OperationClaim> GetClaims(User user)
         {
-            return _userRepository.GetClaims(user);
+            return _userRepository.GetClaimsByUser(user);
         }
 
-        public async void Add(User user)
+        public void Add(User user)
         {
-            await _userRepository.AddAsync(user);
+            var existingUser = _userRepository.Add(user);
+            _userRepository.AddDefaultClaim(existingUser.Id);
         }
 
         public User GetByUsername(string username)

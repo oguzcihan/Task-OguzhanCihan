@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class init : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -138,12 +138,12 @@ namespace DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Courses",
                 columns: new[] { "Id", "CourseName", "CreatedDate", "UpdatedDate" },
-                values: new object[] { 1, "Math", new DateTime(2023, 8, 5, 20, 52, 42, 542, DateTimeKind.Local).AddTicks(2089), null });
+                values: new object[] { 1, "Math", new DateTime(2023, 8, 6, 0, 49, 3, 695, DateTimeKind.Local).AddTicks(9692), null });
 
             migrationBuilder.InsertData(
                 table: "Departments",
                 columns: new[] { "Id", "CreatedDate", "DepartmentName", "UpdatedDate" },
-                values: new object[] { 1, new DateTime(2023, 8, 5, 20, 52, 42, 542, DateTimeKind.Local).AddTicks(2254), "Computer Science", null });
+                values: new object[] { 1, new DateTime(2023, 8, 6, 0, 49, 3, 695, DateTimeKind.Local).AddTicks(9937), "Computer Science", null });
 
             migrationBuilder.InsertData(
                 table: "OperationClaims",
@@ -159,8 +159,8 @@ namespace DataAccess.Migrations
                 columns: new[] { "Id", "CreatedDate", "OperationClaimId", "UpdatedDate", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 8, 5, 20, 52, 42, 542, DateTimeKind.Local).AddTicks(2695), 1, null, 1 },
-                    { 2, new DateTime(2023, 8, 5, 20, 52, 42, 542, DateTimeKind.Local).AddTicks(2696), 2, null, 2 }
+                    { 1, new DateTime(2023, 8, 6, 0, 49, 3, 696, DateTimeKind.Local).AddTicks(604), 1, null, 1 },
+                    { 2, new DateTime(2023, 8, 6, 0, 49, 3, 696, DateTimeKind.Local).AddTicks(606), 2, null, 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -168,14 +168,14 @@ namespace DataAccess.Migrations
                 columns: new[] { "Id", "CreatedDate", "Email", "FirstName", "PasswordHash", "PasswordSalt", "Status", "UpdatedDate", "Username" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 8, 5, 20, 52, 42, 542, DateTimeKind.Local).AddTicks(3495), "admin@gmail.com", "admin", new byte[] { 145, 50, 72, 228, 99, 55, 189, 17, 222, 199, 51, 212, 179, 166, 60, 112, 161, 246, 33, 247, 130, 245, 189, 9, 173, 74, 70, 22, 11, 163, 32, 246, 90, 93, 31, 85, 229, 221, 241, 53, 63, 196, 211, 0, 117, 103, 104, 96, 217, 40, 240, 198, 110, 29, 239, 230, 145, 238, 59, 86, 223, 102, 16, 232 }, new byte[] { 28, 155, 44, 117, 98, 140, 74, 76, 182, 126, 203, 171, 72, 178, 157, 203, 132, 121, 185, 214, 216, 35, 19, 39, 252, 185, 139, 53, 201, 210, 65, 25, 77, 157, 28, 23, 76, 82, 184, 206, 224, 228, 210, 152, 192, 238, 151, 68, 194, 252, 125, 202, 130, 225, 242, 243, 131, 181, 221, 19, 205, 196, 163, 248, 89, 184, 254, 183, 11, 131, 169, 222, 224, 172, 65, 126, 19, 179, 135, 126, 41, 11, 231, 172, 89, 49, 159, 240, 150, 128, 222, 120, 218, 70, 83, 224, 214, 57, 106, 232, 108, 26, 122, 69, 8, 35, 66, 222, 90, 50, 3, 251, 68, 157, 59, 20, 86, 159, 59, 173, 109, 196, 169, 72, 181, 225, 219, 162 }, true, null, "admin" },
-                    { 2, new DateTime(2023, 8, 5, 20, 52, 42, 542, DateTimeKind.Local).AddTicks(3505), "standart@gmail.com", "standart", new byte[] { 207, 141, 197, 159, 155, 29, 8, 10, 7, 248, 200, 132, 145, 24, 225, 144, 119, 35, 164, 97, 82, 33, 201, 38, 109, 92, 141, 173, 100, 21, 200, 99, 89, 25, 173, 164, 159, 77, 110, 152, 215, 35, 118, 166, 235, 210, 214, 138, 140, 179, 20, 96, 107, 190, 193, 55, 244, 16, 115, 172, 134, 85, 45, 44 }, new byte[] { 28, 155, 44, 117, 98, 140, 74, 76, 182, 126, 203, 171, 72, 178, 157, 203, 132, 121, 185, 214, 216, 35, 19, 39, 252, 185, 139, 53, 201, 210, 65, 25, 77, 157, 28, 23, 76, 82, 184, 206, 224, 228, 210, 152, 192, 238, 151, 68, 194, 252, 125, 202, 130, 225, 242, 243, 131, 181, 221, 19, 205, 196, 163, 248, 89, 184, 254, 183, 11, 131, 169, 222, 224, 172, 65, 126, 19, 179, 135, 126, 41, 11, 231, 172, 89, 49, 159, 240, 150, 128, 222, 120, 218, 70, 83, 224, 214, 57, 106, 232, 108, 26, 122, 69, 8, 35, 66, 222, 90, 50, 3, 251, 68, 157, 59, 20, 86, 159, 59, 173, 109, 196, 169, 72, 181, 225, 219, 162 }, true, null, "standart" }
+                    { 1, new DateTime(2023, 8, 6, 0, 49, 3, 696, DateTimeKind.Local).AddTicks(1537), "admin@gmail.com", "admin", new byte[] { 68, 122, 103, 142, 198, 219, 212, 15, 255, 21, 38, 46, 51, 14, 253, 101, 216, 216, 237, 16, 55, 200, 142, 8, 250, 106, 198, 206, 206, 88, 99, 52, 96, 143, 111, 209, 65, 112, 168, 168, 118, 45, 96, 145, 177, 103, 238, 139, 50, 218, 39, 26, 139, 237, 226, 82, 25, 216, 181, 66, 58, 73, 236, 244 }, new byte[] { 14, 99, 241, 233, 203, 123, 53, 109, 25, 109, 98, 88, 141, 37, 11, 200, 238, 25, 66, 76, 254, 131, 107, 142, 162, 163, 119, 75, 103, 110, 88, 75, 57, 9, 53, 254, 188, 75, 243, 2, 16, 164, 34, 112, 202, 104, 131, 208, 180, 250, 239, 15, 148, 42, 188, 55, 215, 7, 3, 200, 246, 62, 81, 103, 45, 229, 73, 137, 217, 156, 100, 69, 43, 199, 203, 230, 181, 122, 78, 143, 128, 160, 17, 96, 147, 175, 22, 168, 243, 26, 65, 17, 253, 6, 24, 67, 214, 100, 210, 229, 63, 37, 212, 59, 243, 184, 228, 168, 227, 97, 93, 124, 73, 222, 84, 29, 20, 60, 43, 76, 205, 1, 235, 228, 142, 172, 146, 62 }, true, null, "admin" },
+                    { 2, new DateTime(2023, 8, 6, 0, 49, 3, 696, DateTimeKind.Local).AddTicks(1555), "standart@gmail.com", "standart", new byte[] { 68, 122, 103, 142, 198, 219, 212, 15, 255, 21, 38, 46, 51, 14, 253, 101, 216, 216, 237, 16, 55, 200, 142, 8, 250, 106, 198, 206, 206, 88, 99, 52, 96, 143, 111, 209, 65, 112, 168, 168, 118, 45, 96, 145, 177, 103, 238, 139, 50, 218, 39, 26, 139, 237, 226, 82, 25, 216, 181, 66, 58, 73, 236, 244 }, new byte[] { 14, 99, 241, 233, 203, 123, 53, 109, 25, 109, 98, 88, 141, 37, 11, 200, 238, 25, 66, 76, 254, 131, 107, 142, 162, 163, 119, 75, 103, 110, 88, 75, 57, 9, 53, 254, 188, 75, 243, 2, 16, 164, 34, 112, 202, 104, 131, 208, 180, 250, 239, 15, 148, 42, 188, 55, 215, 7, 3, 200, 246, 62, 81, 103, 45, 229, 73, 137, 217, 156, 100, 69, 43, 199, 203, 230, 181, 122, 78, 143, 128, 160, 17, 96, 147, 175, 22, 168, 243, 26, 65, 17, 253, 6, 24, 67, 214, 100, 210, 229, 63, 37, 212, 59, 243, 184, 228, 168, 227, 97, 93, 124, 73, 222, 84, 29, 20, 60, 43, 76, 205, 1, 235, 228, 142, 172, 146, 62 }, true, null, "standart" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Students",
                 columns: new[] { "Id", "Age", "CreatedDate", "DepartmentId", "Name", "UpdatedDate" },
-                values: new object[] { 1, 24, new DateTime(2023, 8, 5, 20, 52, 42, 542, DateTimeKind.Local).AddTicks(2600), 1, "Oğuzhan", null });
+                values: new object[] { 1, 24, new DateTime(2023, 8, 6, 0, 49, 3, 696, DateTimeKind.Local).AddTicks(413), 1, "Oğuzhan", null });
 
             migrationBuilder.InsertData(
                 table: "StudentCourses",

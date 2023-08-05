@@ -2,6 +2,7 @@ using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using Business.Mapping;
+using Core.Utilities.AppSettings;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.Jwt;
 using DataAccess.Context;
@@ -10,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using WebAPI.Middlewares;
 using WebAPI.Modules.Autofac;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,11 +28,12 @@ builder.Services.AddAutoMapper(typeof(MapProfile));
 // DB connection
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
-    var connectionString = builder.Configuration.GetConnectionString("TaskApp");
 
-    if (!string.IsNullOrEmpty(connectionString))
+    var tokenOptions = builder.Configuration.GetSection("DatabaseOptions").Get<AppSettings>();
+
+    if (!tokenOptions.UseInMemoryDatabase)
     {
-        options.UseSqlServer(connectionString, o =>
+        options.UseSqlServer(tokenOptions.SqlConnectionString, o =>
         {
             //repository layer in ismini reflection ile alýndý ileride deðiþtirme olasýlýðý düþünülerek.
             o.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name);
@@ -83,6 +86,7 @@ builder.Services.AddSwaggerGen(c =>
                 new string[] {}
             }
         });
+
 });
 
 
@@ -102,7 +106,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-//app.UseCustomException();
+app.UseCustomException();
 
 app.UseAuthentication();
 app.UseAuthorization();

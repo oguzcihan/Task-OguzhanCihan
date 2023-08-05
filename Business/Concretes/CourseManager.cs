@@ -3,7 +3,6 @@ using Business.Abstracts;
 using Business.Exceptions;
 using Core.Dtos;
 using Core.Entities;
-using Core.UnitOfWork;
 using DataAccess.Abstracts;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,14 +11,11 @@ namespace Business.Concretes
     public class CourseManager : ICourseService
     {
         private readonly ICourseRepository _courseRepository;
-        private readonly IUnitOfWork _unitOfWork;
-
         private readonly IMapper _mapper;
 
 
-        public CourseManager(ICourseRepository courseRepository, IUnitOfWork unitOfWork, IMapper mappper)
+        public CourseManager(ICourseRepository courseRepository, IMapper mappper)
         {
-            _unitOfWork = unitOfWork;
             _mapper = mappper;
             _courseRepository = courseRepository;
         }
@@ -33,7 +29,6 @@ namespace Business.Concretes
         {
             var course = _mapper.Map<Course>(courseDto);
             await _courseRepository.AddAsync(course);
-            await _unitOfWork.CommitAsync();
 
             return courseDto;
         }
@@ -77,9 +72,7 @@ namespace Business.Concretes
             {
                 throw new NotFoundException($"{typeof(Course).Name}({courseId}) not found");
             }
-            _courseRepository.Remove(course);
-
-            await _unitOfWork.CommitAsync();
+            await _courseRepository.DeleteAsync(course);
 
         }
 
@@ -101,8 +94,6 @@ namespace Business.Concretes
             var courseMapping = _mapper.Map(courseDto, course);
 
             _courseRepository.Update(courseMapping);
-
-            await _unitOfWork.CommitAsync(); //kayıt
 
             return courseDto;
         }

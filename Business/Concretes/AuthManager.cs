@@ -1,9 +1,7 @@
-﻿using AutoMapper;
-using Business.Abstracts;
+﻿using Business.Abstracts;
 using Business.Exceptions;
 using Core.Dtos;
 using Core.Entities.Identity;
-using Core.UnitOfWork;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.Jwt;
 
@@ -13,13 +11,11 @@ namespace Business.Concretes
     {
         private readonly IUserService _userService;
         private readonly ITokenHelper _tokenHelper;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper, IUnitOfWork unitOfWork)
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
-            _unitOfWork = unitOfWork;
         }
 
         /// <summary>
@@ -43,8 +39,10 @@ namespace Business.Concretes
                     PasswordSalt = passwordSalt,
                     Status = true
                 };
+
+
                 _userService.Add(user);
-                _unitOfWork.CommitAsync();
+
                 return user;
             }
             catch

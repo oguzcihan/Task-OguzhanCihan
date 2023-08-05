@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    //[Authorize(Roles = "Admin,Standart")]
+    [Authorize(Roles = "Admin,Standart")]
     public class DepartmentsController : BaseController
     {
         private readonly IDepartmentService _departmentService;

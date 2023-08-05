@@ -6,6 +6,8 @@ namespace DataAccess.Abstracts
 {
     public interface IUserRepository : IBaseRepository<User>
     {
-        List<OperationClaim> GetClaims(User user);
+        List<OperationClaim> GetClaimsByUser(User user);
+
+        void AddDefaultClaim(int id);
     }
 }
