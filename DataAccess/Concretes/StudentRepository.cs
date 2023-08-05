@@ -1,11 +1,13 @@
 ﻿using Core.DataAccess.EntityFramework;
+using Core.Dtos;
 using Core.Entities;
 using DataAccess.Abstracts;
 using DataAccess.Context;
+using System.Linq.Expressions;
 
 namespace DataAccess.Concretes;
 
-public class StudentRepository : EfRepositoryBase<Student, AppDbContext>, IStudentRepository
+public class StudentRepository : EfBaseRepository<Student, AppDbContext>, IStudentRepository
 {
     private readonly AppDbContext _context;
 

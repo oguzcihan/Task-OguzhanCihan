@@ -1,8 +1,6 @@
 ﻿using Business.Abstracts;
 using Core.Dtos;
-using Core.Entities;
 using Microsoft.AspNetCore.Mvc;
-using WebAPI.Filters;
 
 namespace WebAPI.Controllers
 {
@@ -17,18 +15,17 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetList()
+        public async Task<IActionResult> GetList()
         {
-            var result = _studentService.GetAll();
+            var result = await _studentService.GetAllAsync();
 
-            return CreateActionResult(RestResponseDto<List<StudentDto>>.Success(StatusCodes.Status200OK, result));
+            return CreateActionResult(RestResponseDto<IEnumerable<StudentDto>>.Success(StatusCodes.Status200OK, result));
         }
 
-        [ServiceFilter(typeof(NotFoundFilter<Student>))]
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = _studentService.GetById(id);
+            var result = await _studentService.GetByIdAsync(id);
             return CreateActionResult(RestResponseDto<StudentDto>.Success(StatusCodes.Status200OK, result));
         }
 
@@ -48,21 +45,20 @@ namespace WebAPI.Controllers
 
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> Update([FromQuery] int courseId, [FromBody] StudentDto studentDto)
+        public async Task<IActionResult> Update(int id, [FromQuery] int courseId, [FromBody] StudentDto studentDto)
         {
-            await _studentService.UpdateAsync(courseId, studentDto);
+            await _studentService.UpdateAsync(courseId, id, studentDto);
             return CreateActionResult(RestResponseDto<NoContentDto>.Success(StatusCodes.Status204NoContent));
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var studentDto = _studentService.GetById(id);
-            await _studentService.DeleteAsync(studentDto);
+            await _studentService.RemoveAsync(id);
 
             return CreateActionResult(RestResponseDto<NoContentDto>.Success(StatusCodes.Status204NoContent));
         }

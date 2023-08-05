@@ -3,7 +3,7 @@ using Core.Entities;
 
 namespace DataAccess.Abstracts;
 
-public interface IUserRepository : IAsyncRepository<User>, IRepository<User>
+public interface IUserRepository : IBaseRepository<User>
 {
     //For AuthorRepository operations
 }

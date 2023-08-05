@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230804161946_initial")]
-    partial class initial
+    [Migration("20230805122630_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -51,7 +51,7 @@ namespace DataAccess.Migrations
                         {
                             Id = 1,
                             CourseName = "Math",
-                            CreatedDate = new DateTime(2023, 8, 4, 19, 19, 45, 945, DateTimeKind.Local).AddTicks(9783)
+                            CreatedDate = new DateTime(2023, 8, 5, 15, 26, 30, 218, DateTimeKind.Local).AddTicks(8712)
                         });
                 });
 
@@ -81,7 +81,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2023, 8, 4, 19, 19, 45, 946, DateTimeKind.Local).AddTicks(12),
+                            CreatedDate = new DateTime(2023, 8, 5, 15, 26, 30, 218, DateTimeKind.Local).AddTicks(8895),
                             DepartmentName = "Computer Science"
                         });
                 });
@@ -143,7 +143,7 @@ namespace DataAccess.Migrations
                         {
                             Id = 1,
                             Age = 24,
-                            CreatedDate = new DateTime(2023, 8, 4, 19, 19, 45, 946, DateTimeKind.Local).AddTicks(209),
+                            CreatedDate = new DateTime(2023, 8, 5, 15, 26, 30, 218, DateTimeKind.Local).AddTicks(9072),
                             DepartmentId = 1,
                             Name = "Oğuzhan"
                         });

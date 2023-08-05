@@ -1,16 +1,18 @@
 ﻿using Core.Dtos;
 using Core.Entities;
+using System.Linq.Expressions;
 
 namespace Business.Abstracts
 {
-    public interface IStudentService : IBaseService<StudentDto>
+    public interface IStudentService
     {
-   
-        List<Student> GetListByDepartment(int categoryId);
 
-        Task<StudentDto> AddAsync(int courseId, StudentDto studentRequest);
-        Task<StudentDto> UpdateAsync(int courseId, StudentDto studentRequest);
-        Task DeleteAsync(StudentDto studentDto);
+        Task<RestResponseDto<List<StudentWithDepartmentDto>>> GetStudentsWithDepartment();
+        Task<StudentDto> GetByIdAsync(int id);
+        Task<IEnumerable<StudentDto>> GetAllAsync();
+        Task<StudentDto> AddAsync(int courseId, StudentDto studentDto);
+        Task<StudentDto> UpdateAsync(int courseId, int studentId, StudentDto studentDto);
+        Task RemoveAsync(int id);
 
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class initial : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -89,17 +89,17 @@ namespace DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Courses",
                 columns: new[] { "Id", "CourseName", "CreatedDate", "UpdatedDate" },
-                values: new object[] { 1, "Math", new DateTime(2023, 8, 4, 19, 19, 45, 945, DateTimeKind.Local).AddTicks(9783), null });
+                values: new object[] { 1, "Math", new DateTime(2023, 8, 5, 15, 26, 30, 218, DateTimeKind.Local).AddTicks(8712), null });
 
             migrationBuilder.InsertData(
                 table: "Departments",
                 columns: new[] { "Id", "CreatedDate", "DepartmentName", "UpdatedDate" },
-                values: new object[] { 1, new DateTime(2023, 8, 4, 19, 19, 45, 946, DateTimeKind.Local).AddTicks(12), "Computer Science", null });
+                values: new object[] { 1, new DateTime(2023, 8, 5, 15, 26, 30, 218, DateTimeKind.Local).AddTicks(8895), "Computer Science", null });
 
             migrationBuilder.InsertData(
                 table: "Students",
                 columns: new[] { "Id", "Age", "CreatedDate", "DepartmentId", "Name", "UpdatedDate" },
-                values: new object[] { 1, 24, new DateTime(2023, 8, 4, 19, 19, 45, 946, DateTimeKind.Local).AddTicks(209), 1, "Oğuzhan", null });
+                values: new object[] { 1, 24, new DateTime(2023, 8, 5, 15, 26, 30, 218, DateTimeKind.Local).AddTicks(9072), 1, "Oğuzhan", null });
 
             migrationBuilder.InsertData(
                 table: "StudentCourses",

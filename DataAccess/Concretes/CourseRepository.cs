@@ -5,7 +5,7 @@ using DataAccess.Context;
 
 namespace DataAccess.Concretes;
 
-public class CourseRepository : EfRepositoryBase<Course, AppDbContext>, ICourseRepository
+public class CourseRepository : EfBaseRepository<Course, AppDbContext>, ICourseRepository
 {
     public CourseRepository(AppDbContext context) : base(context)
     {

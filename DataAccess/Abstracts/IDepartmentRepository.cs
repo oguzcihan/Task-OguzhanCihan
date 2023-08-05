@@ -3,7 +3,7 @@ using Core.Entities;
 
 namespace DataAccess.Abstracts;
 
-public interface IDepartmentRepository : IAsyncRepository<Department>, IRepository<Department>
+public interface IDepartmentRepository : IBaseRepository<Department>
 {
     
 }
