@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Core.Dtos;
 using Core.Entities;
 
 namespace Core.DataAccess.Abstracts;

@@ -13,7 +13,7 @@ namespace Core.DataAccess.Abstracts
         IQueryable<TEntity> GetAll();
         //IQueryable Kullanıldığında sorgular direkt olarak db ye gitmez
         IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression);
-        Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression);
+
         Task AddAsync(TEntity entity);
         Task AddRangeAsync(IEnumerable<TEntity> entities);
 

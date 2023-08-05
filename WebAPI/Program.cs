@@ -1,12 +1,12 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
-using Business.DependencyResolvers.Autofac;
 using Business.Mapping;
 using DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 using WebAPI.Middlewares;
+using WebAPI.Modules.Autofac;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +16,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddAutoMapper(typeof(MapProfile));
+
 
 // DB connection
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -32,12 +34,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 //Autofac plugin
-builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
-    .ConfigureContainer<ContainerBuilder>(build =>
-    {
-        build.RegisterModule(new AutofacBusinessModule());
-    });
-
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+//autofac oluþturulan module tanýmlamasý
+builder.Host.ConfigureContainer<ContainerBuilder>(cbuilder => cbuilder.RegisterModule(new AutofacBusinessModule()));
 
 var app = builder.Build();
 

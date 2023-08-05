@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Core.Dtos;
 using Core.Entities;
+using Core.Entities.Relationships;
 
 namespace Business.Mapping
 {
@@ -13,7 +14,7 @@ namespace Business.Mapping
 
             CreateMap<Student, StudentDto>().ReverseMap();
             CreateMap<Course, CourseDto>().ReverseMap();
-            CreateMap<Department, DepartmentDto>().ReverseMap();
+            CreateMap<Department, CourseDto>().ReverseMap();
 
         }
     }

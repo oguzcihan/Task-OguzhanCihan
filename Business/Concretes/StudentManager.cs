@@ -4,9 +4,9 @@ using Business.Exceptions;
 using Core.Dtos;
 using Core.Entities;
 using Core.Entities.Relationships;
+using Core.UnitOfWork;
 using DataAccess.Abstracts;
-using DataAccess.Context;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace Business.Concretes
@@ -15,46 +15,50 @@ namespace Business.Concretes
     {
         private readonly IStudentRepository _studentRepository;
         private readonly ICourseRepository _courseRepository;
-        private readonly AppDbContext _appDbContext;
+        private readonly IStudentCourseRepository _studentCourseRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        private readonly IMapper _mappper;
+        private readonly IMapper _mapper;
 
-        public StudentManager(IStudentRepository studentRepository, ICourseRepository courseRepository, AppDbContext appDbContext, IMapper mapper)
+        public StudentManager(IStudentRepository studentRepository, ICourseRepository courseRepository, IStudentCourseRepository studentCourseRepository, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _studentRepository = studentRepository;
             _courseRepository = courseRepository;
-            _appDbContext = appDbContext;
-            _mappper = mapper;
+            _studentCourseRepository = studentCourseRepository;
+            _unitOfWork = unitOfWork;
+
+            _mapper = mapper;
         }
 
-        public List<StudentDto> GetAll()
+        public async Task<StudentDto> GetByIdAsync(int id)
         {
-            var students = _studentRepository.GetList().ToList();
-            var studentDto = _mappper.Map<List<StudentDto>>(students);
+            var student = await _studentRepository.GetByIdAsync(id);
+            if (student == null)
+            {
+                throw new NotFoundException($"{typeof(Student).Name}({id}) not found");
+            }
+            var studentDto = _mapper.Map<StudentDto>(student);
 
             return studentDto;
         }
 
-        public StudentDto GetById(int studentId)
+        public async Task<IEnumerable<StudentDto>> GetAllAsync()
         {
-            var student = _studentRepository.Get(b => b.Id == studentId);
-            var studentDto = _mappper.Map<StudentDto>(student);
+            var students = await _studentRepository.GetAll().ToListAsync();
+            var studentDto = _mapper.Map<List<StudentDto>>(students);
 
             return studentDto;
-        }
-
-
-        public List<Student> GetListByDepartment(int departmentId)
-        {
-            return new List<Student>(_studentRepository.GetList(b => b.Department.Id == departmentId).ToList());
         }
 
 
         public async Task<StudentDto> AddAsync(int courseId, StudentDto studentDto)
         {
-
-            var course = _courseRepository.Get(c => c.Id == courseId);
-            var studentMapping = _mappper.Map<Student>(studentDto);
+            var course = await _courseRepository.GetByIdAsync(courseId);
+            if (course == null)
+            {
+                throw new NotFoundException($"{typeof(Course).Name}({courseId}) not found");
+            }
+            var studentMapping = _mapper.Map<Student>(studentDto);
 
             var studentCourse = new StudentCourse()
             {
@@ -62,82 +66,54 @@ namespace Business.Concretes
                 Student = studentMapping
             };
 
-            _appDbContext.Add(studentCourse);
+            await _studentCourseRepository.AddAsync(studentCourse);
+            await _studentRepository.AddAsync(studentMapping);
 
+            await _unitOfWork.CommitAsync(); //kayıt
 
-            var student = await _studentRepository.AddAsync(studentMapping);
-            var _studentDto = _mappper.Map<StudentDto>(student);
-
-            return _studentDto;
-        }
-
-        public async Task DeleteAsync(StudentDto studentDto)
-        {
-            var student = _mappper.Map<Student>(studentDto);
-            await _studentRepository.DeleteAsync(student);
+            return studentDto;
         }
 
 
-        public async Task<StudentDto> UpdateAsync(int courseId, StudentDto studentDto)
+        public async Task<StudentDto> UpdateAsync(int courseId, int studentId, StudentDto studentDto)
         {
-            var course = _courseRepository.Get(c => c.Id == courseId);
-
-            if (course != null)
+            var student = await _studentRepository.GetByIdAsync(studentId);
+            var course = await _courseRepository.GetByIdAsync(courseId);
+            if (course == null)
             {
-                var studentMapping = _mappper.Map<Student>(studentDto);
-
-                var student = await _studentRepository.UpdateAsync(studentMapping);
-                var _studentDto = _mappper.Map<StudentDto>(student);
-
-                return _studentDto;
+                throw new NotFoundException($"{typeof(Course).Name}({courseId}) not found");
+            }
+            else if (student == null)
+            {
+                throw new NotFoundException($"{typeof(Course).Name}({studentId}) not found");
             }
 
-            throw new NotFoundException("Course not found");
+            var studentMapping = _mapper.Map(studentDto, student);
+
+            _studentRepository.Update(studentMapping);
+
+            await _unitOfWork.CommitAsync(); //kayıt
+
+            return studentDto;
         }
 
-        public Task<StudentDto> GetByIdAsync(int id)
+
+        public async Task RemoveAsync(int id)
+        {
+            var student = await _studentRepository.GetByIdAsync(id);
+            if (student == null)
+            {
+                throw new NotFoundException($"{typeof(Student).Name}({id}) not found");
+            }
+            _studentRepository.Remove(student);
+            await _unitOfWork.CommitAsync();
+        }
+
+        public Task<RestResponseDto<List<StudentWithDepartmentDto>>> GetStudentsWithDepartment()
         {
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<StudentDto>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
 
-        public IQueryable<StudentDto> Where(Expression<Func<StudentDto, bool>> expression)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> AnyAsync(Expression<Func<StudentDto, bool>> expression)
-        {
-            return await _studentRepository.AnyAsync(expression);
-        }
-
-        public Task<IEnumerable<StudentDto>> AddRangeAsync(IEnumerable<StudentDto> entities)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<StudentDto> AddAsync(StudentDto entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateAsync(StudentDto entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task RemoveAsync(StudentDto entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task RemoveRangeAsync(IEnumerable<StudentDto> entities)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
