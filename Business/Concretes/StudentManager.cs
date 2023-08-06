@@ -30,12 +30,6 @@ namespace Business.Concretes
             _departmentRepository = departmentRepository;
         }
 
-        /// <summary>
-        /// ID si verilen Student verisini getirir.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>StudentDto</returns>
-        /// <exception cref="NotFoundException"></exception>
         public StudentResponse GetById(int id)
         {
 
@@ -49,6 +43,7 @@ namespace Business.Concretes
 
         }
 
+
         public IEnumerable<StudentResponse> GetAll()
         {
             var studentResponse = _studentRepository.GetStudentsWithCourses();
@@ -60,13 +55,7 @@ namespace Business.Concretes
             return studentResponse;
         }
 
-        /// <summary>
-        /// Student ekleme işlemi yapar.
-        /// </summary>
-        /// <param name="courseId"></param>
-        /// <param name="studentDto"></param>
-        /// <returns>StudentDto</returns>
-        /// <exception cref="NotFoundException"></exception>
+
         public async Task<StudentDto> AddAsync(StudentDto studentDto)
         {
             if (studentDto.CourseIds == null || !studentDto.CourseIds.Any())
@@ -103,14 +92,7 @@ namespace Business.Concretes
             return studentDto;
         }
 
-        /// <summary>
-        /// Student güncelleme işlemini yapar.
-        /// </summary>
-        /// <param name="courseId"></param>
-        /// <param name="studentId"></param>
-        /// <param name="studentDto"></param>
-        /// <returns>StudentDto</returns>
-        /// <exception cref="NotFoundException"></exception>
+
         public async Task<StudentDto> UpdateAsync(int studentId, StudentDto studentDto)
         {
 
@@ -167,18 +149,13 @@ namespace Business.Concretes
                 }
 
             }
-           
+
 
             return studentDto;
 
         }
 
-        /// <summary>
-        /// ID si verilen ilgili Student ı siler.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        /// <exception cref="NotFoundException"></exception>
+
         public async Task RemoveAsync(int id)
         {
             var student = await _studentRepository.GetByIdAsync(id);

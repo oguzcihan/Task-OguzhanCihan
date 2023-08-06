@@ -20,11 +20,6 @@ namespace Business.Concretes
             _courseRepository = courseRepository;
         }
 
-        /// <summary>
-        /// Course kaydetme işlemini yapar.
-        /// </summary>
-        /// <param name="courseDto"></param>
-        /// <returns>CourseDto</returns>
         public async Task<CourseDto> AddAsync(CourseDto courseDto)
         {
             var course = _mapper.Map<Course>(courseDto);
@@ -33,10 +28,6 @@ namespace Business.Concretes
             return courseDto;
         }
 
-        /// <summary>
-        /// Tüm kursları listeler.
-        /// </summary>
-        /// <returns>CourseDto</returns>
         public async Task<IEnumerable<CourseDto>> GetAllAsync()
         {
             var courses = await _courseRepository.GetAll().ToListAsync();
@@ -46,11 +37,7 @@ namespace Business.Concretes
             return coursesDto;
         }
 
-        /// <summary>
-        /// Id si verilen Course u listeler.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>CourseDto</returns>
+
         public async Task<CourseDto> GetByIdAsync(int id)
         {
             var course = await _courseRepository.GetByIdAsync(id);
@@ -59,12 +46,7 @@ namespace Business.Concretes
             return courseDto;
         }
 
-        /// <summary>
-        /// ID si verilen Course u siler.
-        /// </summary>
-        /// <param name="courseId"></param>
-        /// <returns></returns>
-        /// <exception cref="NotFoundException"></exception>
+
         public async Task RemoveAsync(int courseId)
         {
             var course = await _courseRepository.GetByIdAsync(courseId);
@@ -76,13 +58,7 @@ namespace Business.Concretes
 
         }
 
-        /// <summary>
-        /// Id ile bulunan ilgili Course u güncelleme işlemini yapar.
-        /// </summary>
-        /// <param name="courseId"></param>
-        /// <param name="courseDto"></param>
-        /// <returns>CourseDto</returns>
-        /// <exception cref="NotFoundException"></exception>
+
         public async Task<CourseDto> UpdateAsync(int courseId, CourseDto courseDto)
         {
             var course = await _courseRepository.GetByIdAsync(courseId);
