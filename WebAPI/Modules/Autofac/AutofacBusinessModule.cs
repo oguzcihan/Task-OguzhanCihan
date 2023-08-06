@@ -1,9 +1,11 @@
 ﻿using Autofac;
 using Business.Abstracts;
 using Business.Concretes;
+using Business.Validations;
 using Core.Utilities.Security.Jwt;
 using DataAccess.Abstracts;
 using DataAccess.Concretes;
+using FluentValidation;
 using Module = Autofac.Module;
 
 namespace WebAPI.Modules.Autofac
@@ -30,6 +32,24 @@ namespace WebAPI.Modules.Autofac
             //Authentication
             builder.RegisterType<AuthManager>().As<IAuthService>().InstancePerLifetimeScope();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().InstancePerLifetimeScope();
+
+            // FluentValidation
+            builder.RegisterAssemblyTypes(typeof(StudentDtoValidator).Assembly)
+                   .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
+                   .AsImplementedInterfaces();
+
+            builder.RegisterAssemblyTypes(typeof(CourseDtoValidator).Assembly)
+                   .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
+                   .AsImplementedInterfaces();
+
+            builder.RegisterAssemblyTypes(typeof(DepartmentDtoValidator).Assembly)
+                  .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
+                  .AsImplementedInterfaces();
+
+            builder.RegisterAssemblyTypes(typeof(RegisterValidator).Assembly)
+                .Where(t => t.IsClosedTypeOf(typeof(IValidator<>)))
+                .AsImplementedInterfaces();
+
         }
     }
 }
