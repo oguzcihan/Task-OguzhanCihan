@@ -5,6 +5,8 @@
 3. Database migrations
 4. Build and Run
 
+Note: Since there is no valid database connectionstring at boot, inmemory will also be started by default. When you want to work with sqlserver, the update-database command should be run after the valid connection string is entered.
+
 ## Database migrations
 ```
 PM> update-database
