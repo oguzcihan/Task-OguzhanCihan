@@ -3,7 +3,6 @@ using Core.Dtos;
 using Core.Dtos.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 
 namespace WebAPI.Controllers
 {
@@ -17,7 +16,7 @@ namespace WebAPI.Controllers
             _studentService = studentService;
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -26,7 +25,7 @@ namespace WebAPI.Controllers
             return CreateActionResult(RestResponseDto<IEnumerable<StudentResponse>>.Success(StatusCodes.Status200OK, result));
         }
 
-        //[Authorize(Roles = "Admin,Standart")]
+        [Authorize(Roles = "Admin,Standart")]
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
@@ -34,7 +33,7 @@ namespace WebAPI.Controllers
             return CreateActionResult(RestResponseDto<StudentResponse>.Success(StatusCodes.Status200OK, result));
         }
 
-        //[Authorize(Roles = "Admin,Standart")]
+        [Authorize(Roles = "Admin,Standart")]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -51,7 +50,7 @@ namespace WebAPI.Controllers
 
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]

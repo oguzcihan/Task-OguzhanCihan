@@ -1,0 +1,33 @@
+//For User Register Post
+{
+  "firstname": "string",
+  "username": "string",
+  "email": "string",
+  "password": "string"
+}
+
+//For User Login Post
+{
+  "username": "string",
+  "password": "string"
+}
+
+//For Department Post
+{
+  "departmentName": "string"
+}
+
+//For Course Post
+{
+  "courseName": "Math"
+}
+
+//For Student Post
+{
+  "name": "oðuzhsn",
+  "age": 24,
+  "departmentId": 1,
+  "courseIds": [
+    1
+  ]
+}
