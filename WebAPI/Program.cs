@@ -29,13 +29,13 @@ builder.Services.AddAutoMapper(typeof(MapProfile));
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
 
-    var tokenOptions = builder.Configuration.GetSection("DatabaseOptions").Get<AppSettings>();
+    var appSettings = builder.Configuration.GetSection("DatabaseOptions").Get<AppSettings>();
 
-    if (!tokenOptions.UseInMemoryDatabase)
+    if (!appSettings.UseInMemoryDatabase)
     {
-        options.UseSqlServer(tokenOptions.SqlConnectionString, o =>
+        options.UseSqlServer(appSettings.SqlConnectionString, o =>
         {
-            //repository layer in ismini reflection ile alýndý ileride deðiþtirme olasýlýðý düþünülerek.
+            //repository layer in ismini reflection ile alÄ±ndÄ± ileride deÄŸiÅŸtirme olasÄ±lÄ±ÄŸÄ± dÃ¼ÅŸÃ¼nÃ¼lerek.
             o.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name);
         });
     }
@@ -63,8 +63,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Oðuzhan Cihan Task", Version = "v1" });
-    // JWT Kimlik Doðrulamayý Swagger için yapýlandýrma
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "OÄŸuzhan Cihan Task", Version = "v1" });
+    // JWT Kimlik DoÄŸrulamayÄ± Swagger iÃ§in yapÄ±landÄ±rma
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
@@ -92,7 +92,7 @@ builder.Services.AddSwaggerGen(c =>
 
 //Autofac plugin
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
-//autofac oluþturulan module tanýmlamasý
+//autofac oluÅŸturulan module tanÄ±mlamasÄ±
 builder.Host.ConfigureContainer<ContainerBuilder>(cbuilder => cbuilder.RegisterModule(new AutofacBusinessModule()));
 
 var app = builder.Build();

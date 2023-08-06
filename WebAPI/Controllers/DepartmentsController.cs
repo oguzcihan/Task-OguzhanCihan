@@ -22,10 +22,10 @@ namespace WebAPI.Controllers
             return CreateActionResult(RestResponseDto<IEnumerable<DepartmentDto>>.Success(StatusCodes.Status200OK, result));
         }
 
-        [HttpGet("{depId}")]
-        public async Task<IActionResult> GetById(int depId)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = await _departmentService.GetByIdAsync(depId);
+            var result = await _departmentService.GetByIdAsync(id);
             return CreateActionResult(RestResponseDto<DepartmentDto>.Success(StatusCodes.Status200OK, result));
         }
 
@@ -45,20 +45,20 @@ namespace WebAPI.Controllers
 
         }
 
-        [HttpPut("{depId}")]
+        [HttpPut("{id}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> Update(int depId, [FromBody] DepartmentDto departmentDto)
+        public async Task<IActionResult> Update(int id, [FromBody] DepartmentDto departmentDto)
         {
-            await _departmentService.UpdateAsync(depId, departmentDto);
+            await _departmentService.UpdateAsync(id, departmentDto);
             return CreateActionResult(RestResponseDto<NoContentDto>.Success(StatusCodes.Status204NoContent));
         }
 
-        [HttpDelete("{depId}")]
-        public async Task<IActionResult> Delete(int depId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            await _departmentService.RemoveAsync(depId);
+            await _departmentService.RemoveAsync(id);
 
             return CreateActionResult(RestResponseDto<NoContentDto>.Success(StatusCodes.Status204NoContent));
         }

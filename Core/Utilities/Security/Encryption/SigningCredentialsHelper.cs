@@ -1,6 +1,4 @@
-﻿
-
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 
 namespace Core.Utilities.Security.Encryption
 {

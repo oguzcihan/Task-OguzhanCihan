@@ -18,12 +18,6 @@ namespace Business.Concretes
             _tokenHelper = tokenHelper;
         }
 
-        /// <summary>
-        /// Kullanıcı kayıt işlemi.
-        /// </summary>
-        /// <param name="userForRegisterDto"></param>
-        /// <param name="password"></param>
-        /// <returns>UserId</returns>
         public User Register(UserForRegisterDto userForRegisterDto, string password)
         {
             try
@@ -55,6 +49,9 @@ namespace Business.Concretes
 
         public User Login(UserForLoginDto userForLoginDto)
         {
+            //appsettings içerisindeki değişken true ise default data eklenir
+            _userService.AddDefaultDataForInMemory();
+
             var userToCheck = _userService.GetByUsername(userForLoginDto.Username);
             if (userToCheck == null)
             {

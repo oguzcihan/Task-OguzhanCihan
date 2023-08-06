@@ -1,9 +1,7 @@
 ﻿using Business.Abstracts;
 using Core.Dtos;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
-using System.Data;
 
 namespace WebAPI.Controllers
 {
@@ -25,10 +23,10 @@ namespace WebAPI.Controllers
             return CreateActionResult(RestResponseDto<IEnumerable<CourseDto>>.Success(StatusCodes.Status200OK, result));
         }
 
-        [HttpGet("{courseId}")]
-        public async Task<IActionResult> GetById(int courseId)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = await _courseService.GetByIdAsync(courseId);
+            var result = await _courseService.GetByIdAsync(id);
             return CreateActionResult(RestResponseDto<CourseDto>.Success(StatusCodes.Status200OK, result));
         }
 
@@ -48,20 +46,20 @@ namespace WebAPI.Controllers
 
         }
 
-        [HttpPut("{courseId}")]
+        [HttpPut("{id}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> Update(int courseId, [FromBody] CourseDto courseDto)
+        public async Task<IActionResult> Update(int id, [FromBody] CourseDto courseDto)
         {
-            await _courseService.UpdateAsync(courseId, courseDto);
+            await _courseService.UpdateAsync(id, courseDto);
             return CreateActionResult(RestResponseDto<NoContentDto>.Success(StatusCodes.Status204NoContent));
         }
 
-        [HttpDelete("{courseId}")]
-        public async Task<IActionResult> Delete(int courseId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            await _courseService.RemoveAsync(courseId);
+            await _courseService.RemoveAsync(id);
 
             return CreateActionResult(RestResponseDto<NoContentDto>.Success(StatusCodes.Status204NoContent));
         }
