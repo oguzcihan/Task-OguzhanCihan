@@ -9,3 +9,13 @@
 ```
 PM> update-database
 ```
+
+# Frameworks/libraries used:
+* ASP.NET Core 6.0
+* Entity Framework Core 6.0
+* AutoMapper
+* FluentValidation
+* Autofac
+* MSSQL Server
+* InMemory
+* JwtBearer
