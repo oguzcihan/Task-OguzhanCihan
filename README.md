@@ -7,5 +7,5 @@
 
 ## Database migrations
 ```
-PM> Update-Database
+PM> update-database
 ```
