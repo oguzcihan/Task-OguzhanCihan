@@ -1,9 +1,13 @@
 ﻿using Core.DataAccess.Abstracts;
+using Core.Dtos.Responses;
 using Core.Entities;
 
 namespace DataAccess.Abstracts;
 
 public interface IStudentRepository : IBaseRepository<Student>
 {
-    ICollection<Student> GetStudents();
+    IEnumerable<StudentResponse> GetStudentsWithCourses();
+    StudentResponse GetStudentWithCourses(int studentId);
+
+
 }

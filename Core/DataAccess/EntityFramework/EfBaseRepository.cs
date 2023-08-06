@@ -88,4 +88,12 @@ public class EfBaseRepository<TEntity, TContext> : IBaseRepository<TEntity>
     {
         return await Context.Set<TEntity>().FindAsync(id);
     }
+
+    public void RemoveRange(IEnumerable<TEntity> entities)
+    {
+        Context.RemoveRange(entities);
+        Context.SaveChanges();
+    }
+
+    
 }

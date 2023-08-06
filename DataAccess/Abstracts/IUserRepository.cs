@@ -8,6 +8,8 @@ namespace DataAccess.Abstracts
     {
         List<OperationClaim> GetClaimsByUser(User user);
 
-        void AddDefaultClaim(int id);
+        void AddDefaultUserClaim(int id);
+
+        void AddDefaultDataForInMemory();
     }
 }

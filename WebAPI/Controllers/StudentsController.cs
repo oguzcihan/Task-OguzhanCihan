@@ -1,12 +1,13 @@
 ﻿using Business.Abstracts;
 using Core.Dtos;
+using Core.Dtos.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Data;
 
 namespace WebAPI.Controllers
 {
-    [Authorize(Roles = "Admin")]
+
     public class StudentsController : BaseController
     {
         private readonly IStudentService _studentService;
@@ -16,47 +17,52 @@ namespace WebAPI.Controllers
             _studentService = studentService;
         }
 
+        //[Authorize(Roles = "Admin")]
         [HttpGet]
-        public async Task<IActionResult> GetList()
+        public IActionResult GetAll()
         {
-            var result = await _studentService.GetAllAsync();
+            var result = _studentService.GetAll();
 
-            return CreateActionResult(RestResponseDto<IEnumerable<StudentDto>>.Success(StatusCodes.Status200OK, result));
+            return CreateActionResult(RestResponseDto<IEnumerable<StudentResponse>>.Success(StatusCodes.Status200OK, result));
         }
 
+        //[Authorize(Roles = "Admin,Standart")]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public IActionResult GetById(int id)
         {
-            var result = await _studentService.GetByIdAsync(id);
-            return CreateActionResult(RestResponseDto<StudentDto>.Success(StatusCodes.Status200OK, result));
+            var result = _studentService.GetById(id);
+            return CreateActionResult(RestResponseDto<StudentResponse>.Success(StatusCodes.Status200OK, result));
         }
 
+        //[Authorize(Roles = "Admin,Standart")]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public async Task<IActionResult> Save([FromQuery] int courseId, [FromBody] StudentDto studentDto)
+        public async Task<IActionResult> Save([FromBody] StudentDto studentDto)
         {
 
             if (studentDto == null || !ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var result = await _studentService.AddAsync(courseId, studentDto);
+            var result = await _studentService.AddAsync(studentDto);
 
             return CreateActionResult(RestResponseDto<StudentDto>.Success(StatusCodes.Status201Created, result));
 
         }
 
+        //[Authorize(Roles = "Admin")]
         [HttpPut("{id}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public async Task<IActionResult> Update(int id, [FromQuery] int courseId, [FromBody] StudentDto studentDto)
+        public async Task<IActionResult> Update(int id, [FromBody] StudentDto studentDto)
         {
-            await _studentService.UpdateAsync(courseId, id, studentDto);
+            await _studentService.UpdateAsync(id, studentDto);
             return CreateActionResult(RestResponseDto<NoContentDto>.Success(StatusCodes.Status204NoContent));
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

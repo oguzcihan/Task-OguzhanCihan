@@ -29,11 +29,11 @@ builder.Services.AddAutoMapper(typeof(MapProfile));
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
 
-    var tokenOptions = builder.Configuration.GetSection("DatabaseOptions").Get<AppSettings>();
+    var appSettings = builder.Configuration.GetSection("DatabaseOptions").Get<AppSettings>();
 
-    if (!tokenOptions.UseInMemoryDatabase)
+    if (!appSettings.UseInMemoryDatabase)
     {
-        options.UseSqlServer(tokenOptions.SqlConnectionString, o =>
+        options.UseSqlServer(appSettings.SqlConnectionString, o =>
         {
             //repository layer in ismini reflection ile alýndý ileride deðiþtirme olasýlýðý düþünülerek.
             o.MigrationsAssembly(Assembly.GetAssembly(typeof(AppDbContext)).GetName().Name);

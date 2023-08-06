@@ -1,8 +1,10 @@
 ﻿using Core.Entities;
 using Core.Entities.Identity;
 using Core.Entities.Relationships;
+using Core.Utilities.AppSettings;
 using DataAccess.Seeds;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
@@ -45,9 +47,12 @@ public class AppDbContext : DbContext
             .HasForeignKey(c => c.CourseId);
 
 
+
+
         base.OnModelCreating(modelBuilder);
 
     }
+
 
 
 }

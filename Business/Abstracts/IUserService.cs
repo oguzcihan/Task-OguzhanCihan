@@ -7,5 +7,8 @@ namespace Business.Abstracts
         List<OperationClaim> GetClaims(User user);
         void Add(User user);
         User GetByUsername(string username);
+
+        void AddDefaultDataForInMemory();
+
     }
 }

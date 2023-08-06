@@ -55,6 +55,9 @@ namespace Business.Concretes
 
         public User Login(UserForLoginDto userForLoginDto)
         {
+            //appsettings içerisindeki değişken true ise default data eklenir
+            _userService.AddDefaultDataForInMemory();
+
             var userToCheck = _userService.GetByUsername(userForLoginDto.Username);
             if (userToCheck == null)
             {
